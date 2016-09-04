@@ -1,0 +1,25 @@
+---
+
+- name: wget mumble
+  command: wget https://github.com/mumble-voip/mumble/releases/download/1.2.16/murmur-static_x86-1.2.16.tar.bz2 -P /tmp
+
+- name: install bzip2
+  yum:
+    name: bzip2
+    state: installed
+
+- name: create mumble directory
+  file:
+    path:  /usr/local/mumble
+    state: directory
+    owner: murmur
+    group: murmur
+    mode:  0770
+
+- name: unzip tar.bz2
+  command: tar -vxjf /tmp/murmur-static_x86-1.2.16.tar.bz2 -C /usr/local/mumble
+
+- copy ini file
+  copy:
+    src:  etc/murmur.ini
+    dest: /etc/murmur.ini
